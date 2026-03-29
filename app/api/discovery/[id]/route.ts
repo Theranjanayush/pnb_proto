@@ -1,9 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const resolvedParams = await params;
+export async function GET(
+  req: NextRequest, 
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
   return NextResponse.json({
-    scan_id: resolvedParams.id,
+    scan_id: id,
     nodes: [
       { id: "1", label: "DFS Root Network", type: "hub", x: 50, y: 50 },
       { id: "2", label: "auth.dfs.in", type: "node", x: 20, y: 30 },

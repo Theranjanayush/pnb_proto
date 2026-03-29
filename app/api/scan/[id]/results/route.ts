@@ -1,11 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const resolvedParams = await params;
+export async function GET(
+  req: NextRequest, 
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
   
   // Returns the final scan vulnerability snapshot
   return NextResponse.json({
-    scan_id: resolvedParams.id,
+    scan_id: id,
     identifiedAssets: 12,
     criticalVulnerabilities: 3,
     overallScore: 785,

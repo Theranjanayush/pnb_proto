@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const resolvedParams = await params;
-  
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+
   return NextResponse.json({
-    scan_id: resolvedParams.id,
+    scan_id: id,
     generatedAt: new Date().toISOString(),
     cbomRecords: [
       { id: "ast-01", asset: "login.dfs.gov.in", keyLength: "RSA-2048", cipherSuite: "TLS_RSA_WITH_AES_128_CBC_SHA", tlsVersion: "TLS 1.2", ca: "DigiCert", pqcStatus: "Non-Compliant", riskScore: 88, statusKey: "Critical" },

@@ -1,8 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const resolvedParams = await params;
-  const id = resolvedParams.id;
+export async function GET(
+  req: NextRequest, 
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
   
   const url = new URL(req.url);
   const step = parseInt(url.searchParams.get("step") || "0");
