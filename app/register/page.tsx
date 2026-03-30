@@ -21,8 +21,15 @@ export default function RegisterPage() {
     const formData = new FormData(e.currentTarget);
     const fullName = formData.get("fullName");
     const email = formData.get("email");
-    const phone = formData.get("phone");
-    const password = formData.get("password");
+    const phone = formData.get("phone") as string;
+    const password = formData.get("password") as string;
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>\/])\S{8,15}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Password must be 8-15 chars, no spaces, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch("/api/auth/register", {

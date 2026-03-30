@@ -13,6 +13,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>\/])\S{8,15}$/;
+    if (!passwordRegex.test(password)) {
+      return NextResponse.json({ error: "Password does not meet complexity requirements." }, { status: 400 });
+    }
+
     await connectToDatabase();
 
     // Check if user already exists
